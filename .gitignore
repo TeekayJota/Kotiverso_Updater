@@ -1,0 +1,17 @@
+# Secretos y Config
+.env
+manifest.json
+
+# Entorno Virtual y Caché
+venv/
+env/
+__pycache__/
+
+# Archivos de prueba y logs
+Entorno_Pruebas/
+*.log
+
+# Compilación
+build/
+dist/
+*.spec
