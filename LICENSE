@@ -1,193 +1,85 @@
-# 🎮 Kotimanager
+PolyForm Noncommercial License 1.0.0
 
-**Minecraft Multi-Profile Updater — v2.1.0**
+<https://polyformproject.org/licenses/noncommercial/1.0.0>
 
-Gestor de entornos de Minecraft diseñado para comunidades que buscan simplicidad, orden y sincronización automática.
+Copyright 2026 Jonas
 
-Kotimanager permite alternar instantáneamente entre **modpacks pesados** y el **perfil personal del usuario**, garantizando que todos los jugadores tengan:
+1. Acceptance
 
-* 📁 Los mismos archivos
-* ☕ La versión correcta de Java
-* ⚙️ Sin configuración manual
+In order to get any license under these terms, you must agree
+to them as both strict obligations and conditions to all
+your licenses.
 
----
+2. Copyright License
 
-## 🚀 ¿Qué hace Kotimanager?
+The licensor grants you a copyright license to do everything
+with the software that would otherwise infringe the
+licensor's copyright in it for any permitted purpose.
 
-* ✔ Aísla perfiles para evitar sobrescrituras accidentales
-* ✔ Detecta automáticamente instalaciones de Java
-* ✔ Sincroniza archivos mediante hashes SHA-256
-* ✔ Permite restaurar el perfil personal en segundos
-* ✔ Optimiza descargas masivas con múltiples hilos
+3. Noncommercial Purposes
 
----
+Any noncommercial purpose is a permitted purpose.
 
-## 🆕 Novedades en la v2.1.0
+4. Personal Uses
 
-### 🏬 Sistema de Bodegas Inteligente
+Personal use for research, experimentation, and testing
+are noncommercial purposes.
 
-Los perfiles ahora se aíslan automáticamente en carpetas con sufijos:
+5. Noncommercial Organizations
 
-```
-mods_deceasedcraft
-mods_user
-resourcepacks_deceasedcraft
-```
+Use by any charitable organization, educational institution,
+public research organization, public safety or health
+organization, environmental organization, or government
+institution is a noncommercial purpose regardless of the
+source of funding.
 
-Nunca más perderás tus carpetas personales al cambiar de modpack.
+6. Fair Use
 
----
+You may have rights under fair use or similar doctrines.
+Nothing in this license limits them.
 
-### ☕ Detección Multinivel de Java
+7. No Other Rights
 
-El sistema busca instalaciones de:
+These terms do not grant you any licenses other than
+licenses under copyright.
 
-* Java 8
-* Java 17
-* Java 21
+8. Patent Defense
 
-Detecta versiones instaladas desde:
+If you make any written claim that the software infringes
+or contributes to infringement of any patent, your
+copyright license ends immediately. If your claim is
+unsuccessful, you must pay the licensor's legal fees and
+costs.
 
-* Microsoft
-* Adoptium
-* Oracle
+9. Violations
 
-Si el JDK ya está presente, evita descargas innecesarias.
+If you violate these terms, your license ends immediately.
 
----
+10. No Liability
 
-### 🔄 Restauración de Perfil Personal
+As far as the law allows, the software comes as is, without
+any warranty or condition, and the licensor will not be
+liable to you for any damages arising out of these terms
+or the use or nature of the software.
 
-Permite:
+11. Definitions
 
-* Mover archivos del modpack a su bodega
-* Recuperar el perfil `user` (vanilla/personal)
-* Volver al estado original en segundos
+The licensor is the individual or entity offering the
+software under these terms.
 
----
+The software is the software the licensor makes available
+under these terms.
 
-### ⚡ Modo Turbo Optimizado
+You refers to the individual or entity agreeing to these
+terms.
 
-* Hasta 8 hilos concurrentes
-* Conexiones persistentes (HTTP Keep-Alive)
-* Optimizado para packs con miles de archivos pequeños
+Your company is any legal entity, sole proprietorship,
+or other kind of organization that you work for or own,
+directly or indirectly.
 
-Resultado: menor latencia y mayor velocidad de sincronización.
+Commercial purpose means a purpose primarily intended for
+or directed toward commercial advantage or monetary
+compensation.
 
----
-
-## 🏗 Arquitectura del Sistema
-
-### 🖥 Cliente (Updater)
-
-#### `ui.py`
-
-Interfaz moderna con CustomTkinter que incluye:
-
-* Selector dinámico de perfiles
-* Barra de progreso con ETA
-* Indicador de velocidad
-
-#### `core.py`
-
-Motor de sincronización que:
-
-* Gestiona el cambio de carpetas
-* Verifica integridad con SHA-256
-* Elimina archivos obsoletos
-* Realiza sincronización incremental
-
-#### `prerequisites.py`
-
-Encargado de:
-
-* Buscar Java en PATH
-* Escanear rutas comunes en Windows
-* Instalar silenciosamente archivos `.msi` si es necesario
-
----
-
-### ☁ Administrador (Nube)
-
-#### `index.json`
-
-Define:
-
-* IDs de perfil
-* Versiones de Java requeridas
-* URLs de manifiestos
-
-#### `creador_manifest.py`
-
-Herramienta para el administrador que:
-
-* Escanea carpetas locales
-* Genera hashes SHA-256
-* Produce manifiestos listos para subir a S3 / R2
-
----
-
-## 🛠 Instalación y Setup (Desarrollo)
-
-### Requisitos
-
-* Python 3.10+
-* Acceso a un bucket compatible con S3 (probado con Cloudflare R2)
-
----
-
-### 🔐 Configuración del Entorno (.env)
-
-Crear un archivo `.env` en la raíz del proyecto:
-
-```
-R2_ACCESS_KEY=tu_key
-R2_SECRET_KEY=tu_secret
-R2_ENDPOINT_URL=https://tu-id.r2.cloudflarestorage.com
-R2_BUCKET_NAME=nombre-del-bucket
-URL_INDEX=https://tu-dominio.com/index.json
-```
-
----
-
-## 📦 Compilación para Usuarios (Producción)
-
-Para distribuir el ejecutable sin requerir Python ni archivo `.env`:
-
-```bash
-pyinstaller --noconsole --onefile --uac-admin --icon=icon.ico --name "Kotimanager" --collect-all customtkinter ui.py
-```
-
-Se recomienda inyectar la `URL_INDEX` directamente en el código o vía argumento CLI para builds finales.
-
----
-
-## 🔎 Flujo de Funcionamiento
-
-1. El usuario selecciona un perfil.
-2. Kotimanager verifica Java.
-3. Aísla las carpetas activas.
-4. Compara hashes SHA-256.
-5. Descarga únicamente los archivos necesarios.
-6. El entorno queda listo para jugar.
-
----
-
-## 🔐 Transparencia
-
-* No se recolectan datos del usuario.
-* El movimiento de carpetas ocurre exclusivamente dentro de `.minecraft`.
-* La instalación de Java proviene de fuentes oficiales.
-* El almacenamiento en R2 es administrado por el equipo del servidor.
-
----
-
-## 📄 Licencia
-
-Este proyecto se distribuye bajo la licencia:
-
-**PolyForm Noncommercial 1.0.0**
-Required Notice: Copyright 2026 Jonas (https://github.com/TeekayJota)
-
-Más información:
-https://polyformproject.org/licenses/noncommercial/1.0.0
+Noncommercial purpose means any purpose that is not a
+commercial purpose.
