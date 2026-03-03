@@ -1,6 +1,7 @@
 # Secretos y Config
 .env
 manifest.json
+index.json
 
 # Entorno Virtual y Caché
 venv/
@@ -10,6 +11,7 @@ __pycache__/
 # Archivos de prueba y logs
 Entorno_Pruebas/
 *.log
+*.msi
 
 # Compilación
 build/

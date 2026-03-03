@@ -1,0 +1,15 @@
+{
+  "modpacks": [
+    {
+      "id": "nombre-del-pack",
+      "nombre": "Mi Modpack Pro",
+      "version_pack": "1.0.0",
+      "minecraft": "1.20.1",
+      "java_version": "17",
+      "url_java": "https://tu-url.com/java.msi",
+      "manifest_url": "https://tu-url.com/modpack/manifest.json",
+      "url_base_cloud": "https://tu-url.com/modpack",
+      "prefijo_nube": "modpack-folder"
+    }
+  ]
+}

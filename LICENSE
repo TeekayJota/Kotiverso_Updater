@@ -1,261 +1,193 @@
+# 🎮 Kotimanager
+
+**Minecraft Multi-Profile Updater — v2.1.0**
+
+Gestor de entornos de Minecraft diseñado para comunidades que buscan simplicidad, orden y sincronización automática.
+
+Kotimanager permite alternar instantáneamente entre **modpacks pesados** y el **perfil personal del usuario**, garantizando que todos los jugadores tengan:
+
+* 📁 Los mismos archivos
+* ☕ La versión correcta de Java
+* ⚙️ Sin configuración manual
+
+---
+
+## 🚀 ¿Qué hace Kotimanager?
+
+* ✔ Aísla perfiles para evitar sobrescrituras accidentales
+* ✔ Detecta automáticamente instalaciones de Java
+* ✔ Sincroniza archivos mediante hashes SHA-256
+* ✔ Permite restaurar el perfil personal en segundos
+* ✔ Optimiza descargas masivas con múltiples hilos
+
+---
+
+## 🆕 Novedades en la v2.1.0
+
+### 🏬 Sistema de Bodegas Inteligente
+
+Los perfiles ahora se aíslan automáticamente en carpetas con sufijos:
+
+```
+mods_deceasedcraft
+mods_user
+resourcepacks_deceasedcraft
+```
+
+Nunca más perderás tus carpetas personales al cambiar de modpack.
+
+---
+
+### ☕ Detección Multinivel de Java
+
+El sistema busca instalaciones de:
+
+* Java 8
+* Java 17
+* Java 21
+
+Detecta versiones instaladas desde:
+
+* Microsoft
+* Adoptium
+* Oracle
+
+Si el JDK ya está presente, evita descargas innecesarias.
+
+---
+
+### 🔄 Restauración de Perfil Personal
+
+Permite:
+
+* Mover archivos del modpack a su bodega
+* Recuperar el perfil `user` (vanilla/personal)
+* Volver al estado original en segundos
+
+---
+
+### ⚡ Modo Turbo Optimizado
+
+* Hasta 8 hilos concurrentes
+* Conexiones persistentes (HTTP Keep-Alive)
+* Optimizado para packs con miles de archivos pequeños
+
+Resultado: menor latencia y mayor velocidad de sincronización.
+
+---
+
+## 🏗 Arquitectura del Sistema
+
+### 🖥 Cliente (Updater)
+
+#### `ui.py`
+
+Interfaz moderna con CustomTkinter que incluye:
+
+* Selector dinámico de perfiles
+* Barra de progreso con ETA
+* Indicador de velocidad
+
+#### `core.py`
+
+Motor de sincronización que:
+
+* Gestiona el cambio de carpetas
+* Verifica integridad con SHA-256
+* Elimina archivos obsoletos
+* Realiza sincronización incremental
+
+#### `prerequisites.py`
+
+Encargado de:
+
+* Buscar Java en PATH
+* Escanear rutas comunes en Windows
+* Instalar silenciosamente archivos `.msi` si es necesario
+
+---
+
+### ☁ Administrador (Nube)
+
+#### `index.json`
+
+Define:
+
+* IDs de perfil
+* Versiones de Java requeridas
+* URLs de manifiestos
+
+#### `creador_manifest.py`
+
+Herramienta para el administrador que:
+
+* Escanea carpetas locales
+* Genera hashes SHA-256
+* Produce manifiestos listos para subir a S3 / R2
+
+---
+
+## 🛠 Instalación y Setup (Desarrollo)
+
+### Requisitos
+
+* Python 3.10+
+* Acceso a un bucket compatible con S3 (probado con Cloudflare R2)
+
+---
+
+### 🔐 Configuración del Entorno (.env)
+
+Crear un archivo `.env` en la raíz del proyecto:
+
+```
+R2_ACCESS_KEY=tu_key
+R2_SECRET_KEY=tu_secret
+R2_ENDPOINT_URL=https://tu-id.r2.cloudflarestorage.com
+R2_BUCKET_NAME=nombre-del-bucket
+URL_INDEX=https://tu-dominio.com/index.json
+```
+
+---
+
+## 📦 Compilación para Usuarios (Producción)
+
+Para distribuir el ejecutable sin requerir Python ni archivo `.env`:
+
+```bash
+pyinstaller --noconsole --onefile --uac-admin --icon=icon.ico --name "Kotimanager" --collect-all customtkinter ui.py
+```
+
+Se recomienda inyectar la `URL_INDEX` directamente en el código o vía argumento CLI para builds finales.
+
+---
+
+## 🔎 Flujo de Funcionamiento
+
+1. El usuario selecciona un perfil.
+2. Kotimanager verifica Java.
+3. Aísla las carpetas activas.
+4. Compara hashes SHA-256.
+5. Descarga únicamente los archivos necesarios.
+6. El entorno queda listo para jugar.
+
+---
+
+## 🔐 Transparencia
+
+* No se recolectan datos del usuario.
+* El movimiento de carpetas ocurre exclusivamente dentro de `.minecraft`.
+* La instalación de Java proviene de fuentes oficiales.
+* El almacenamiento en R2 es administrado por el equipo del servidor.
+
+---
+
+## 📄 Licencia
+
+Este proyecto se distribuye bajo la licencia:
+
+**PolyForm Noncommercial 1.0.0**
 Required Notice: Copyright 2026 Jonas (https://github.com/TeekayJota)
 
-
-
-<https://polyformproject.org/licenses/noncommercial/1.0.0>
-
-
-
-## Acceptance
-
-
-
-In order to get any license under these terms, you must agree
-
-to them as both strict obligations and conditions to all
-
-your licenses.
-
-
-
-## Copyright License
-
-
-
-The licensor grants you a copyright license for the
-
-software to do everything you might do with the software
-
-that would otherwise infringe the licensor's copyright
-
-in it for any permitted purpose. However, you may
-
-only distribute the software according to [Distribution
-
-License](#distribution-license) and make changes or new works
-
-based on the software according to [Changes and New Works
-
-License](#changes-and-new-works-license).
-
-
-
-## Distribution License
-
-
-
-The licensor grants you an additional copyright license
-
-to distribute copies of the software. Your license
-
-to distribute covers distributing the software with
-
-changes and new works permitted by [Changes and New Works
-
-License](#changes-and-new-works-license).
-
-
-
-## Notices
-
-
-
-You must ensure that anyone who gets a copy of any part of
-
-the software from you also gets a copy of these terms or the
-
-URL for them above, as well as copies of any plain-text lines
-
-beginning with `Required Notice:` that the licensor provided
-
-with the software. For example:
-
-
-
-> Required Notice: Copyright Yoyodyne, Inc. (http://example.com)
-
-
-
-## Changes and New Works License
-
-
-
-The licensor grants you an additional copyright license to
-
-make changes and new works based on the software for any
-
-permitted purpose.
-
-
-
-## Patent License
-
-
-
-The licensor grants you a patent license for the software that
-
-covers patent claims the licensor can license, or becomes able
-
-to license, that you would infringe by using the software.
-
-
-
-## Noncommercial Purposes
-
-
-
-Any noncommercial purpose is a permitted purpose.
-
-
-
-## Personal Uses
-
-
-
-Personal use for research, experiment, and testing for
-
-the benefit of public knowledge, personal study, private
-
-entertainment, hobby projects, amateur pursuits, or religious
-
-observance, without any anticipated commercial application,
-
-is use for a permitted purpose.
-
-
-
-## Noncommercial Organizations
-
-
-
-Use by any charitable organization, educational institution,
-
-public research organization, public safety or health
-
-organization, environmental protection organization,
-
-or government institution is use for a permitted purpose
-
-regardless of the source of funding or obligations resulting
-
-from the funding.
-
-
-
-## Fair Use
-
-
-
-You may have "fair use" rights for the software under the
-
-law. These terms do not limit them.
-
-
-
-## No Other Rights
-
-
-
-These terms do not allow you to sublicense or transfer any of
-
-your licenses to anyone else, or prevent the licensor from
-
-granting licenses to anyone else. These terms do not imply
-
-any other licenses.
-
-
-
-## Patent Defense
-
-
-
-If you make any written claim that the software infringes or
-
-contributes to infringement of any patent, your patent license
-
-for the software granted under these terms ends immediately. If
-
-your company makes such a claim, your patent license ends
-
-immediately for work on behalf of your company.
-
-
-
-## Violations
-
-
-
-The first time you are notified in writing that you have
-
-violated any of these terms, or done anything with the software
-
-not covered by your licenses, your licenses can nonetheless
-
-continue if you come into full compliance with these terms,
-
-and take practical steps to correct past violations, within
-
-32 days of receiving notice. Otherwise, all your licenses
-
-end immediately.
-
-
-
-## No Liability
-
-
-
-***As far as the law allows, the software comes as is, without
-
-any warranty or condition, and the licensor will not be liable
-
-to you for any damages arising out of these terms or the use
-
-or nature of the software, under any kind of legal claim.***
-
-
-
-## Definitions
-
-
-
-The **licensor** is the individual or entity offering these
-
-terms, and the **software** is the software the licensor makes
-
-available under these terms.
-
-
-
-**You** refers to the individual or entity agreeing to these
-
-terms.
-
-
-
-**Your company** is any legal entity, sole proprietorship,
-
-or other kind of organization that you work for, plus all
-
-organizations that have control over, are under the control of,
-
-or are under common control with that organization. **Control**
-
-means ownership of substantially all the assets of an entity,
-
-or the power to direct its management and policies by vote,
-
-contract, or otherwise. Control can be direct or indirect.
-
-
-
-**Your licenses** are all the licenses granted to you for the
-
-software under these terms.
-
-
-
-**Use** means anything you do with the software requiring one
-
-of your licenses.
+Más información:
+https://polyformproject.org/licenses/noncommercial/1.0.0
